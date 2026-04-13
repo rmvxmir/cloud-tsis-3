@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CFO Bot — PS Cloud Cost Estimator</title>
+  <meta name="description" content="Estimate your monthly PS Cloud infrastructure costs for Virtual Machines, Kubernetes Clusters, and Object Storage in KZT." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-icon">☁️</span>
+        <span class="brand-name">CFO Bot</span>
+        <span class="brand-tag">PS Cloud Cost Estimator</span>
+      </div>
+      <button id="reset-btn" class="btn btn-ghost" title="Start over">↺ Reset</button>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <!-- ── Chat panel ──────────────────────────────────────────── -->
+    <section class="chat-panel" aria-label="Chat">
+      <div class="chat-messages" id="chat-messages" role="log" aria-live="polite"></div>
+      <!-- Inline forms are injected here by app.js -->
+    </section>
+
+    <!-- ── Results panel ──────────────────────────────────────── -->
+    <aside class="results-panel" id="results-panel" aria-label="Cost breakdown">
+      <div class="results-placeholder" id="results-placeholder">
+        <span class="placeholder-icon">📊</span>
+        <p>Your cost breakdown will appear here after you complete all three steps.</p>
+      </div>
+
+      <div class="results-content hidden" id="results-content">
+        <h2 class="results-title">Monthly Cost Breakdown</h2>
+
+        <!-- VM -->
+        <div class="result-card" id="card-vm">
+          <div class="card-header">
+            <span class="card-icon">🖥️</span>
+            <span class="card-label">Virtual Machines</span>
+            <span class="card-total" id="res-vm-total">—</span>
+          </div>
+          <ul class="card-breakdown" id="res-vm-breakdown"></ul>
+        </div>
+
+        <!-- Kubernetes -->
+        <div class="result-card" id="card-k8s">
+          <div class="card-header">
+            <span class="card-icon">⎈</span>
+            <span class="card-label">Kubernetes Cluster</span>
+            <span class="card-total" id="res-k8s-total">—</span>
+          </div>
+          <ul class="card-breakdown" id="res-k8s-breakdown"></ul>
+        </div>
+
+        <!-- Storage -->
+        <div class="result-card" id="card-storage">
+          <div class="card-header">
+            <span class="card-icon">🗄️</span>
+            <span class="card-label">Cloud Storage</span>
+            <span class="card-total" id="res-storage-total">—</span>
+          </div>
+          <ul class="card-breakdown" id="res-storage-breakdown"></ul>
+        </div>
+
+        <!-- Grand total -->
+        <div class="grand-total" id="card-grand-total">
+          <span class="grand-label">Total</span>
+          <span class="grand-amount" id="res-grand-total">—</span>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
