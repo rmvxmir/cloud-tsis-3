@@ -286,7 +286,33 @@ cloud_storage_total_cost =
 
 ---
 
-## 7. Final Monthly Total
+## 7. Service Selection Rules
+
+The system must allow the user to select any subset of the supported service categories:
+
+- Virtual Machines
+- Virtual Kubernetes Clusters
+- Cloud Storage
+
+The user is not required to configure all service categories in a single calculation.
+
+The calculator must support:
+- exactly one selected category
+- any combination of two selected categories
+- all three selected categories
+
+The calculator must require the user to select and configure at least one service category before a cost estimate can be generated.
+
+If no service category is selected, the system must return a validation error and must not perform the calculation.
+
+Any category not selected by the user must:
+- not require input
+- not trigger validation errors
+- contribute a cost of 0 to the final total
+
+---
+
+## 8. Final Monthly Total
 
 The final estimated monthly cost must be calculated as:
 
@@ -297,9 +323,18 @@ grand_total =
   + cloud_storage_total_cost
 ```
 
+The final total monthly cost is the sum of all selected service category costs:
+
+total_cost =
+virtual_machine_cost
++ kubernetes_cluster_cost
++ cloud_storage_cost
+
+For any unselected category, its cost must be 0.
+
 ---
 
-## 8. Output Requirements
+## 9. Output Requirements
 
 For every successful calculation, the system must return:
 
@@ -310,7 +345,7 @@ For every successful calculation, the system must return:
 
 The result must be itemized and human-readable.
 
-### 8.1 Minimum Output Structure
+### 9.1 Minimum Output Structure
 
 ```text
 Virtual Machines: <amount> KZT/month
@@ -319,7 +354,7 @@ Cloud Storage: <amount> KZT/month
 Total: <amount> KZT/month
 ```
 
-### 8.2 Recommended Detailed Output Structure
+### 9.2 Recommended Detailed Output Structure
 
 The UI should also show sub-breakdowns, for example:
 
@@ -329,9 +364,9 @@ The UI should also show sub-breakdowns, for example:
 
 ---
 
-## 9. Chatbot Behavior
+## 10. Chatbot Behavior
 
-### 9.1 Required Behavior
+### 10.1 Required Behavior
 
 The bot must:
 
@@ -341,7 +376,7 @@ The bot must:
 - return deterministic cost calculations,
 - never invent unsupported services or pricing rules.
 
-### 9.2 Prohibited Behavior
+### 10.2 Prohibited Behavior
 
 The bot must not:
 
@@ -352,7 +387,7 @@ The bot must not:
 
 ---
 
-## 10. UI / UX Requirements
+## 11. UI / UX Requirements
 
 The final web app must include:
 
@@ -362,7 +397,7 @@ The final web app must include:
 - a reset button,
 - clear KZT labels on all outputs.
 
-### 10.1 UX Goals
+### 11.1 UX Goals
 
 The UI must be:
 
@@ -371,9 +406,18 @@ The UI must be:
 - mobile-friendly,
 - fast enough for repeated recalculation.
 
+The interface must allow the user to choose which service categories to include in the estimate.
+
+The UI must:
+- provide separate selection controls for each category
+- show inputs only for selected categories
+- hide or disable inputs for unselected categories
+- require at least one category to be selected before calculation
+- calculate the total using only selected categories
+
 ---
 
-## 11. Technical Constraints
+## 12. Technical Constraints
 
 - The frontend must be deployed to **Firebase Hosting**.
 - Any backend logic, if required, must use **serverless Firebase Functions**.
@@ -382,7 +426,7 @@ The UI must be:
 
 ---
 
-## 12. Non-Functional Requirements
+## 13. Non-Functional Requirements
 
 - Response time for a completed calculation should be below **3 seconds**.
 - Validation errors must be readable and specific.
@@ -390,7 +434,7 @@ The UI must be:
 
 ---
 
-## 13. Suggested Validation Messages
+## 14. Suggested Validation Messages
 
 Examples:
 
@@ -403,9 +447,9 @@ Examples:
 
 ---
 
-## 14. Sample Calculation
+## 15. Sample Calculation
 
-### 14.1 Example Input
+### 15.1 Example Input
 
 #### Virtual Machines
 
@@ -435,7 +479,7 @@ Examples:
 - `write_requests = 20000`
 - `read_requests = 250000`
 
-### 14.2 Example Output
+### 15.2 Example Output
 
 VM unit cost:
 
@@ -517,7 +561,7 @@ Grand total:
 
 ---
 
-## 15. Optional Simplification for Cloud Storage UI
+## 16. Optional Simplification for Cloud Storage UI
 
 If the team insists on **one request input field only**, the UI may expose a single field called `requests_total`, but this must be documented as a **simplified mode** and not the default.
 
@@ -534,6 +578,6 @@ This mode is easier for users but less faithful to real pricing.
 
 ---
 
-## 16. Final Rule
+## 17. Final Rule
 
 Implementation plans, test cases, generated code, and deployment outputs must follow this document exactly unless the team explicitly revises this SSOT and records the change.
